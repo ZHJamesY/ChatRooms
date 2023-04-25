@@ -4,31 +4,37 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(href='https://fonts.googleapis.com/css?family=Varela Round', rel='stylesheet')
     link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css")
-    link(rel="stylesheet", href="./css/ChatRooms.css")
+    link(rel="stylesheet", href="./css/EnterPage.css")
     script(src="https://code.jquery.com/jquery-3.6.3.min.js")
-    script(src="./script/ChatRooms.js")
+    script(src="./script/EnterPage.js")
     title= title
   body#EnterPage
     div#mainContent
      
+      //- display messages
       h1(class=animationClass)= h1Message
       p(style='color:white; font-size:15px;',class=animationClass)= logInMessage
       if query && query.error === 'unauthorized'
-        p(style='color:white; font-size:15px;',class=animationClass) Your session is expired, please sign in again.
+        p(style='color:white; font-size:15px;',class=animationClass) Your session has expired, please sign in again.
 
 
       div(class=animationClass)
+        //- log in 
         form(method=signInMethod, action='/login', class='form')
-          div.text-center
-            input#username.form-control(name='username', type='username', class=usernameClass, placeholder='Username')
-
+          div.text-center(class=signInClass)
+            input#username.form-control(name='username', type='text', class=usernameClass, placeholder='Username')
             input#password.form-control(name='password', type='password', class=passwordClass, placeholder='Password')
 
             button.btn.btn-dark#signIn(class=signInClass) Sign In
 
+        //- sign up
         form(method=signUpMethod, action='/signup', class=form)
-          button.btn.btn-dark#signUp(class=signUpClass) Sign Up
+          div.text-center(class=signUpClass)
+            input#username.form-control(name='username', type='text', class=usernameClass, placeholder='Username')
+            input#password.form-control(name='password', type='password', class=passwordClass, placeholder='Password')
+            button.btn.btn-dark#signUp(class=signUpClass) Sign Up
       
+      //- circle animation
       div.circle-group1.circle-1
       div.circle-group1.circle-2
       div.circle-group1.circle-3

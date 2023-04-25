@@ -1,0 +1,166 @@
+.enter-animation
+{
+    opacity: 0;
+    animation: appear 1s ease forwards;
+}
+
+@keyframes appear 
+{
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.circle-group1
+{
+    position: fixed;
+    bottom: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: white;
+    opacity: 0.2;
+    animation: circleAnimation1 16s linear infinite;
+}
+
+.circle-group2
+{
+    position: fixed;
+    bottom: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: white;
+    opacity: 0;
+    animation: circleAnimation2 16s linear infinite;
+    animation-delay: 6s;    
+
+}
+
+.circle-1 
+{
+    left: -50px;
+    bottom: -100px;
+    width: 200px;
+    height: 200px;
+}
+  
+.circle-2 
+{
+    right: -50px;
+    bottom: 200px;
+    width: 150px;
+    height: 150px;
+}
+
+.circle-3 
+{
+    left: -50px;
+    bottom: 400px;
+    width: 100px;
+    height: 100px;
+}
+
+.circle-4 
+{
+    right: -50px;
+    bottom: 200px;
+    width: 100px;
+    height: 100px;
+}
+  
+.circle-5 
+{
+    left: -50px;
+    bottom: 20px;
+    width: 150px;
+    height: 150px;
+}
+
+.circle-6 
+{
+    animation-delay: 9s;  
+    right: -50px;
+    bottom: 0px;
+    width: 200px;
+    height: 200px;
+}
+
+
+@keyframes circleAnimation1 
+{
+    from {
+        transform: translateY(500px);
+    }
+    to {
+        transform: translateY(-900px);
+    }
+}
+
+@keyframes circleAnimation2 
+{
+    from {
+        opacity: 0.2;
+        transform: translateY(500px);
+    }
+    to {
+        opacity: 0.2;
+        transform: translateY(-900px);
+    }
+}
+
+#EnterPage
+{
+    background-color: #2c304ed9;
+}
+
+#mainContent
+{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+#mainContent h1
+{
+    font-weight: 500;
+    font-family: 'Varela Round';
+    text-align:center;
+    color:white;
+    margin-bottom:20px;
+}
+
+#mainContent .btn
+{
+    margin:10px;
+    width:130px;
+    align-items:center;
+}
+
+.form
+{
+    align-content:center;
+}
+
+.hidden
+{
+    display:none;
+}
+
+.form-control
+{
+    margin-bottom:15px;
+}
+
