@@ -1,6 +1,5 @@
 // import modules
 const express = require('express');
-require('dotenv').config();
 const session = require('express-session');
 
 const app = express();
@@ -365,11 +364,12 @@ io.on('connection', function(socket){
     });
 });
 
+
 app.get('/LogOut', function(request,response){
     // get user name from request
     const username = request.query.username;
     request.session[username] = '';
-    response.redirect('/EnterPage');
+    response.redirect('/');
 });
 
 

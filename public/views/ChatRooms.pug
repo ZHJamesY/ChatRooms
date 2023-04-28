@@ -20,9 +20,9 @@ html(lang="en")
             div.collapse.navbar-collapse#navbarNav
                 ul.navbar-nav
                     li.nav-item.active
-                        a.nav-link(href="/ChatRooms") Home
+                        a.nav-link(href="/ChatRooms?username=" + username) Home
                     li.nav-item
-                        a.nav-link(href="/EnterPage") Log Out
+                        a.nav-link(href="/LogOut") Log Out
 
         div#dashboard_section
             div.container-fluid
@@ -34,9 +34,6 @@ html(lang="en")
                             div.user-info
                                 p.profileName#profile_name= username
                                 p Status: Online
-                        form(method='get', action='/refreshRoom', class='form')
-                            input(type='hidden', name='username', value= username)
-                            button.btn.btn-dark#refresh_room Refresh Rooms
 
                         form(method='get', action='/createRoom', class='form')
                             input(type='hidden', name='username', value= username)
@@ -45,6 +42,10 @@ html(lang="en")
                         form(method='get', action='/joinRoom', class='form')
                             input(type='hidden', name='username', value= username)
                             button.btn.btn-dark#join_room Join Room
+
+                        form(method='get', action='/joinRoom', class='form ' + joinRoomClass)
+                            input(type='hidden', name='username', value= username)
+                            button.btn.btn-dark#refresh_room Refresh Rooms
 
                     //- right section Chat
                     div.col-md-10
@@ -59,7 +60,6 @@ html(lang="en")
                                         //- input.form-control#input(type="text", placeholder="Enter message")
                                         textarea.form-control#messageInput(placeholder="Type message..", name="messageInput")
 
-                            
                         //- createRoomClass
                         div.createRoom#createRoomElement(class=createRoomClass)
                             span Create Room 
