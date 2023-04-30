@@ -40,6 +40,13 @@ This feature allows users to create/join chat rooms and perform real-time commun
 * [Pug](https://pugjs.org/api/getting-started.html)
 
 #### Create chat room:
+![image4](https://user-images.githubusercontent.com/82336264/235334196-451c2a13-af04-4f2c-9875-60bed9026ae2.gif)
+
+#### Join chat room and interaction between users:
+![image5](https://user-images.githubusercontent.com/82336264/235334214-af733f81-2f7b-4ca5-bef4-742495cf5793.gif)
+
+#### User left chat room:
+![image6](https://user-images.githubusercontent.com/82336264/235334232-80749498-9b07-434e-a306-247a29e90c76.gif)
 
 
 
