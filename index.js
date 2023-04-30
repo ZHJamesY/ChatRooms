@@ -338,7 +338,6 @@ io.on('connection', function(socket){
         }
     });
 
-
     console.log("current room list length: ", roomList.length);
     // emit roomList to client
     socket.emit('roomList', roomList);
