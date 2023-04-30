@@ -35,6 +35,7 @@ html(lang="en")
                                 p.profileName#profile_name= username
                                 p Status: Online
 
+                        //- left side bar section
                         form(method='get', action='/createRoom', class='form')
                             input(type='hidden', name='username', value= username)
                             button.btn.btn-dark#create_room() Create Room
@@ -47,9 +48,9 @@ html(lang="en")
                             input(type='hidden', name='username', value= username)
                             button.btn.btn-dark#refresh_room Refresh Rooms
 
-                    //- right section Chat
+                    //- right section
                     div.col-md-10
-                        //- div.chatContent(class=chatClass)
+                        //- chatting page
                         div.chatContent#chatElement(class=chatClass)
                             span#chatRoomTitle Chat Room:
                             div.card
@@ -57,19 +58,18 @@ html(lang="en")
                                     div.chat-box#chat_box
                                         textarea#chat_log(readonly, style="display: block; width: 100%; height: 400px; resize: none; margin: 0; padding: 0; border: 0;")
                                         br
-                                        //- input.form-control#input(type="text", placeholder="Enter message")
                                         textarea.form-control#messageInput(placeholder="Type message..", name="messageInput")
 
-                        //- createRoomClass
+                        //- create room page
                         div.createRoom#createRoomElement(class=createRoomClass)
                             span Create Room 
                             span#createRoomTitle
-                            form(method='post', action='/createRoom', class='form')
+                            form(method='post', action='/createRoom' ,class='form', id='createForm')
                                 input(type='hidden', name='username', value=username)
                                 input#roomID.form-control(type='text', name='roomID', placeholder='Room ID')
                                 button.btn.btn-dark#createRoomButton Create
 
-                        //- joinRoomClass
+                        //- join room page
                         div.joinRoom#joinRoomElement(class=joinRoomClass)
                             span Active Rooms 
                             br

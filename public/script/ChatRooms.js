@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
     console.log("refreshed");
 
     // get elements
@@ -11,7 +10,7 @@ $(document).ready(function(){
     const chatRoomTitle = document.getElementById('chatRoomTitle');
     const username = document.getElementById('profile_name').innerHTML;
 
-    // if createRoom doesn't have class 'hidden', add attribute else remove
+    // if createRoom doesn't have class 'hidden', add attribute else remove it
     if(!$(createRoom).hasClass('hidden'))
     {
         const roomIDinput = document.getElementById('roomID');
@@ -47,7 +46,7 @@ $(document).ready(function(){
         chatInput.addEventListener('keydown', function(event){
             const keyCode = event.which || event.keyCode;
         
-            // if === enter key and != shift key, send message
+            // if === enter key and not shift key, sends message
             // shift + enter keys go to new line
             if(keyCode === 13 && !event.shiftKey) 
             {
@@ -57,14 +56,14 @@ $(document).ready(function(){
             }
         });
 
+        // receive messages from server
         socket.on('message', function(data){
             console.log("message is: ", data);
             addMessageToLog(chatLog, data);
         });
-
     }
 
-    // collect current room list from server if join room option clicked
+    // collect current room list from server if join/create room option clicked
     if(!$(joinRoom).hasClass('hidden')) 
     {
         console.log("enter view room list")
@@ -121,6 +120,26 @@ $(document).ready(function(){
             }
         });
     }
+    // check if room has been created
+    else if(!$(createRoom).hasClass('hidden'))
+    {
+        // connect to the server
+        const socket = io();
+
+        // receive room list from server
+        socket.on('roomList', function(data){
+            $('#createRoomButton').click(function(event){
+                const createInputVal = document.getElementById('roomID').value;
+                // check if input value exist in data
+                if(data.includes(createInputVal))
+                {
+                    alert("Room already exists!");
+                    event.preventDefault();
+                }
+            });
+        });
+    }
+
 
     // if chat doesn't have class 'hidden' but join, do join connection
     if(!$(chat).hasClass('hidden') && $(chat).hasClass('join')) 
@@ -145,7 +164,7 @@ $(document).ready(function(){
         chatInput.addEventListener('keydown', function(event){
             const keyCode = event.which || event.keyCode;
         
-            // if === enter key and != shift key, send message
+            // if === enter key and not shift key, send message
             // shift + enter keys go to new line
             if(keyCode === 13 && !event.shiftKey) 
             {
@@ -162,12 +181,13 @@ $(document).ready(function(){
     }
 });
 
-// add a message to the chat log
+// update a message to the chat log
 function addMessageToLog(chatLog, message) 
 {
     chatLog.value += `${message}\n`;
 }
 
+// send message to server
 function sendMessage(roomID, username, chatInput, socket)
 {
     if(chatInput.value != '')
@@ -180,3 +200,4 @@ function sendMessage(roomID, username, chatInput, socket)
         chatInput.value = '';
     }
 }
+

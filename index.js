@@ -116,7 +116,7 @@ app.post('/login', async function(request, response){
     // login success if exist == true, else return to login page
     if(exist)
     {        
-        // add the username to the array
+        // add the username to session
         request.session[username] = true;
 
         response.redirect('/ChatRooms?username=' + username)
@@ -146,14 +146,14 @@ app.post('/signup', async function(request, response){
     const query = request.query;
     const exist = await userExists(username,password);
 
-    // login success if exist == true, else return to login page
+    // sign up success if exist == false, else return to sign up page
     if(!exist)
     {        
-        // add the username to the array
+        // add the username to session
         request.session[username] = true;
 
         const Accounts = dataBase.Accounts;
-        // Insert the new account into the database
+        // add the new account username & password into the database
         const newAccount = new Accounts({
             Username: username,
             Password: password,
@@ -165,11 +165,11 @@ app.post('/signup', async function(request, response){
     else
     {
         response.render('EnterPage',{
-            title: "Sign In",
+            title: "Sign Up",
             animationClass: "enter-animation",
             h1Message: "Sign Up",
             signInMethod: "",
-            logInMessage: "",
+            logInMessage: "Username already in use, try another username.",
             usernameClass: "required",
             passwordClass: "required",
             signInClass: "hidden",
@@ -180,11 +180,12 @@ app.post('/signup', async function(request, response){
     }
 });
 
+// home page (enters once signed in)
 app.get('/ChatRooms', function(request,response){
 
-    // get user name from request
+    // get user name from query
     const username = request.query.username;
-    // check if session id exist, else return to login page and display unauthorized message
+    // check if session id exists, else return to login page and display unauthorized message
     if(request.session[username])
     {
         response.render('ChatRooms', {
@@ -201,12 +202,13 @@ app.get('/ChatRooms', function(request,response){
     }
 });
 
+// create room page
 app.get('/createRoom', function(request, response){
 
-    // get user name from request
+    // get user name from query
     const username = request.query.username;
 
-    // check user session id
+    // check user session id exists
     if(request.session[username])
     {
         response.render('ChatRooms', {
@@ -223,11 +225,12 @@ app.get('/createRoom', function(request, response){
     }
 });
 
+// join room page
 app.get('/joinRoom', function(request, response){
 
-    // get user name from request
+    // get user name from query
     const username = request.query.username;
-    // check user session id
+    // check user session id exists
     if(request.session[username])
     {
         response.render('ChatRooms', {
@@ -244,28 +247,27 @@ app.get('/joinRoom', function(request, response){
     }
 });
 
+// create room request
 app.post('/createRoom', function(request, response){
     let username = request.body.username;
     let roomID = request.body.roomID;
 
-    console.log("in post create username = ", username);
-
     response.redirect('/chat?username='+ username + '&roomID=' + roomID + '&status=create');
 });
 
+// join room request
 app.post('/joinRoom', function(request, response){
     let username = request.body.username;
     let roomID = request.body.roomID;
     response.redirect('/chat?username='+ username + '&roomID=' + roomID + '&status=join');
 });
 
+// chat page
 app.get('/chat', function(request, response){
-        // get user name from request
+        // get user name from query
         const username = request.query.username;
-        // get status from query parameters
+        // get status from query 
         const status = request.query.status;
-
-        console.log("status = ", status);
 
         // check user session id
         if(request.session[username])
@@ -284,13 +286,16 @@ app.get('/chat', function(request, response){
         }
 });
 
+// list of active rooms
 let roomList = []
+// index of each room in roomList - key(room id): value(index)
 let roomIndex = {}
+// number of users in each room - key(room id): value(number of users)
 let roomUsers = {}
+// users that joined a room - key(socket id): value(username)
 let User_username = {};
+// users and the room id they joined - key(socket id): value(room id)
 let User_roomID = {};
-
-
 
 // start connection
 io.on('connection', function(socket){
@@ -298,7 +303,7 @@ io.on('connection', function(socket){
 
     // create room connection
     socket.on('createRoom', function(data){
-        // Create room connection if room not exist in roomList, else display msg
+        // Create room connection if room not exist in roomList
         if(!roomList.includes(data.roomID))
         {
             socket.join(data.roomID);
@@ -307,41 +312,38 @@ io.on('connection', function(socket){
             roomUsers[data.roomID] = 1;
             User_roomID[socket.id] = data.roomID;
             User_username[socket.id] = data.username;
+
             console.log(`Client created room ${data.roomID}`);
+
             // welcome msg to current user
             socket.emit('message', `(Server): Welcome to chat room ${data.roomID}.`);
-        }
-        else
-        {
-            console.log("Room already exists");
         }
     });
 
     // join room connection
     socket.on('joinRoom', function(data){
+        // join room if room exist in roomList
         if(roomList.includes(data.roomID))
         {
             socket.join(data.roomID);
             roomUsers[data.roomID] += 1;
             User_roomID[socket.id] = data.roomID;
             User_username[socket.id] = data.username;
+
             // welcome msg to current user
             socket.emit('message', `(Server): Welcome to chat room ${data.roomID}.`);
-            // broadcast msg to users in room except current user
+            
+            // broadcast msg to users in current room except current user
             socket.broadcast.to(data.roomID).emit('message', `(Server): User ${data.username} joined the chat room.`);
-
         }
     });
 
-    console.log("room list length: ", roomList.length);
-    socket.emit('roomList', roomList);
-
     // disconnect
     socket.on('disconnect', function(){
-        // number of users in room - 1
+        // number of users in roomUsers - 1
         roomUsers[User_roomID[socket.id]] -= 1;
 
-        // if room users == 0
+        // if room users == 0 in roomUsers
         if(roomUsers[User_roomID[socket.id]] == 0)
         {
             // remove room id from roomList and index from roomIndex
@@ -349,26 +351,29 @@ io.on('connection', function(socket){
             delete roomIndex[User_roomID[socket.id]];
         }
 
-        console.log("disconnected username: ", User_username[socket.id]);
-        console.log("disconnected room id: ", User_roomID[socket.id])
-
+        // broadcast msg to users in current room except current user
         socket.broadcast.to(User_roomID[socket.id]).emit('message', `(Server): User ${User_username[socket.id]} left the chat room.`);
+        
         console.log('User disconnected');
     });
 
-    // // message between user
+    // message between users
     socket.on('message', function(data){
         
         console.log(`Message from user (${data.username}): ${data.message}`);
+
+        // message sends to all users in current room
         io.to(data.roomID).emit('message', `(${data.username}): ${data.message}`);
     });
 });
 
-
+// log out
 app.get('/LogOut', function(request,response){
     // get user name from request
     const username = request.query.username;
+    // remove session id 
     request.session[username] = '';
+    // redirect back to enter page
     response.redirect('/');
 });
 

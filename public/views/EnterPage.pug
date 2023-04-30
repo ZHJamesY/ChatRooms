@@ -22,23 +22,23 @@ html(lang="en")
         //- log in 
         form(method=signInMethod, action='/login', class='form')
           div.text-center(class=signInClass)
-            input#username.form-control(name='username', type='text', class=usernameClass, placeholder='Username')
-            input#password.form-control(name='password', type='password', class=passwordClass, placeholder='Password')
+            input#signinUsername.form-control(name='username', type='text', class=usernameClass, placeholder='Username')
+            input#signinPassword.form-control(name='password', type='password', class=passwordClass, placeholder='Password')
 
             button.btn.btn-dark#signIn(class=signInClass) Sign In
 
         //- sign up
         form(method=signUpMethod, action='/signup', class=form)
           div.text-center(class=signUpClass)
-            input#username.form-control(name='username', type='text', class=usernameClass, placeholder='Username')
-            input#password.form-control(name='password', type='password', class=passwordClass, placeholder='Password')
+            input#signupUsername.form-control(name='username', type='text', class=usernameClass, placeholder='Username')
+            input#signupPassword.form-control(name='password', type='password', class=passwordClass, placeholder='Password')
             button.btn.btn-dark#signUp(class=signUpClass) Sign Up
       
       //- circle animation
-      div.circle-group1.circle-1
-      div.circle-group1.circle-2
+      div.circle.circle-group1.circle-1
+      div.circle.circle-group1.circle-2
       div.circle-group1.circle-3
 
-      div.circle-group2.circle-4
-      div.circle-group2.circle-5
-      div.circle-group2.circle-6
+      div.circle.circle-group2.circle-4
+      div.circle.circle-group2.circle-5
+      div.circle.circle-group2.circle-6

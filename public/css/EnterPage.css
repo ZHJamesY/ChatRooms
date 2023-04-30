@@ -16,6 +16,11 @@
     }
 }
 
+.circle
+{
+    z-index:-1;
+}
+
 .circle-group1
 {
     position: fixed;
