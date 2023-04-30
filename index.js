@@ -144,7 +144,7 @@ app.post('/signup', async function(request, response){
     let username = request.body.username;
     let password = request.body.password;
     const query = request.query;
-    const exist = await userExists(username,password);
+    const exist = await userExists(username,'');
 
     // sign up success if exist == false, else return to sign up page
     if(!exist)
@@ -337,6 +337,11 @@ io.on('connection', function(socket){
             socket.broadcast.to(data.roomID).emit('message', `(Server): User ${data.username} joined the chat room.`);
         }
     });
+
+
+    console.log("current room list length: ", roomList.length);
+    // emit roomList to client
+    socket.emit('roomList', roomList);
 
     // disconnect
     socket.on('disconnect', function(){
