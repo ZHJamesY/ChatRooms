@@ -1,7 +1,7 @@
 # ChatRooms  
 This chat application allows users to create/join a chat room and establish real-time communication with other users.   
 
-Access through https://chat-rooms-f9pk.onrender.com/  
+Access demo: https://chat-rooms-f9pk.onrender.com/  
 
 Sample accounts:  
 &emsp; username: user1, password: user123  
