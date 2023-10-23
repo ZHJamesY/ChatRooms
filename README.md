@@ -3,7 +3,7 @@ This chat application allows users to create/join a chat room and establish real
 
 Access demo: https://chat-rooms-f9pk.onrender.com/  
 
-Sample accounts:  
+Guest accounts:  
 &emsp; username: user1, password: user123  
 &emsp; username: user2, password: user123  
 
